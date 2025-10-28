@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org"> <head>
+    <meta charset="UTF-8">
+    <title>Empréstimos - BiblioTech</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="page-container">
+        <h1>Empréstimos</h1>
+        <h2>Empréstimos - BiblioTech</h2>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Livro</th> <th>CPF Leitor</th>
+                        <th>Data Empréstimo</th>
+                        <th>Devolução Prevista</th>
+                        <th>Devolução Real</th>
+                        <th>Status</th>
+                        <th>Ações</th> </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="emprestimo : ${emprestimos}">
+                        <td th:text="${emprestimo.id}">ID</td>
+                        <td th:text="${emprestimo.livro != null ? emprestimo.livro.titulo : 'N/A'}">Título</td>
+                        <td th:text="${emprestimo.cpfLeitor}">CPF Leitor</td>
+                        
+                        <td th:text="${#temporals.format(emprestimo.dataEmprestimo, 'dd/MM/yyyy')}"></td> 
+                        <td th:text="${#temporals.format(emprestimo.dataDevolucaoPrevista, 'dd/MM/yyyy')}"></td>
+                        <td th:text="${emprestimo.dataDevolucaoReal != null ? #temporals.format(emprestimo.dataDevolucaoReal, 'dd/MM/yyyy') : 'Pendente'}"></td>
+                        
+                        <td th:text="${emprestimo.dataDevolucaoReal != null ? #temporals.format(emprestimo.dataDevolucaoReal, 'dd/MM/yyyy') : 'Pendente'}"></td>
+                        <td th:text="${emprestimo.dataDevolucaoReal != null ? 'Devolvido' : 'Em curso'}">Status</td>
+                        <td>
+                            <form th:if="${emprestimo.dataDevolucaoReal == null}" 
+                                  th:action="@{/emprestimos/devolver/{id}(id=${emprestimo.id})}" 
+                                  method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-small btn-green" onclick="return confirm('Confirmar a devolução deste livro?');">Devolver</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="action-buttons">
+            <a th:href="@{/livros}" class="btn btn-orange">Livros</a> 
+            
+            <a th:href="@{/emprestimos/novo}" class="btn btn-orange">Novo empréstimo</a>
+            
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

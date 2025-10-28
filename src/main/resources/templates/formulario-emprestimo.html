@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Novo Empréstimo - BiblioTech</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"> 
+<body>
+    <div class="page-container">
+        <h1>Novo Empréstimo</h1>
+        <h2>Registre o empréstimo do livro</h2>
+
+        <form th:action="@{/emprestimos/salvar}" th:object="${emprestimo}" method="post" class="form-cadastro">
+            
+            <input type="hidden" th:field="*{id}" />
+
+            <label for="livro">Livro:</label>
+            <select id="livro" th:field="*{livro}" required>
+                <option value="">-- Selecione o Livro --</option>
+                <option th:each="livro : ${livrosDisponiveis}" 
+                        th:value="${livro.id}" 
+                        th:text="${livro.titulo + ' (' + livro.autor + ')'}">Título do Livro</option>
+            </select>
+            
+            <label for="cpfLeitor">CPF do Leitor:</label>
+            <input type="text" id="cpfLeitor" th:field="*{cpfLeitor}" required placeholder="Apenas números">
+
+            <label for="dataDevolucaoPrevista">Devolução Prevista:</label>
+            <input type="date" id="dataDevolucaoPrevista" th:field="*{dataDevolucaoPrevista}" required>
+
+            <div class="action-buttons">
+                <button type="submit" class="btn btn-green">Registrar Empréstimo</button>
+                
+                <a th:href="@{/emprestimos}" class="btn btn-gray">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
